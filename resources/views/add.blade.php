@@ -15,17 +15,27 @@
                    <p class="help">Зурагтай зар илүү олон хүнд хүрдэг гэдгийг анхаарна уу.</p>
                 </div>
                 <div class="form-group">
-                    <label for="categories">Ангилал</label>
-                    <select id="categories" class="form-control" name="categories[]" multiple="multiple">
+                    <label for="categories" class="catlabel">Ангилал</label>
+                    <select id="categories" class="form-control" name="categories[]" >
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}" 
-                            @if (old('categories') == $category->id)
-                                selected
-                            @endif
-                            >{{ $category->name }}</option>
+                        @if($category->parent_id==0)
+                            <optgroup label="{{ $category->name }}">
+                        @endif
+                            @foreach($categories as $cat)
+                                        @if($category->id == $cat->parent_id)
+                                        <option value="{{ $cat->id }}" 
+                                        @if (old('categories') == $cat->id)
+                                            selected
+                                        @endif
+                                        >{{ $cat->name }}</option>
+                                        @endif
+                            @endforeach
+                        @if($category->parent_id==0)
+                            </optgroup>
+                        @endif
                         @endforeach
                     </select>
-                    <span class="help">Өөрийн зард тохирох ангилалууд сонгоно уу. Жишээ: Зарна, Суудлын машин.</span>
+                    <span class="help">Өөрийн зард тохирох ангилалууд сонгоно уу.</span>
                     @if ($errors->has('categories'))
                         <span class="help-block">
                             {{ $errors->first('categories') }}
@@ -113,7 +123,19 @@
     <script type="text/javascript">
     $( document ).ready(function() {
         $("#categories").select2();
+
+        $('#categories').on('change', function () {
+            showLabel();
+        });
+        
+        // fire on page load
+        $('#categories').change();
     });
-    
+    function showLabel() {
+        var selected = $('#categories :selected');
+        var item = selected.text();
+        var group = selected.parent().attr('label');
+        $('.catlabel').text('Ангилал: ' + group + ' - ' + item);
+    }
     </script>
 @endsection

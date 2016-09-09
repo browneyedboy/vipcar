@@ -132,6 +132,9 @@ h2{
 .select2-container{
 	height: auto;
 }
+.select2-choice{
+	padding: 0;
+}
 .select2-choices li{
 	text-transform: capitalize;
 }
@@ -141,3 +144,18 @@ h2{
 	color: red;
 	font-size: 12px;
 }
+.select2-drop .select2-result-with-children>.select2-result-label, .catlabel{
+	color: #1abc9c;
+}
+
+
+
+
+
+
+
+
+
+
+
+
